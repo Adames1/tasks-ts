@@ -1,8 +1,12 @@
 import { Plus, Search } from "lucide-react";
 import TasksForm from "./components/TasksForm";
-import TasksItem from "./components/TasksItem";
+import { useTasksStore } from "./store/store";
+import TasksList from "./components/TasksList";
 
 function App() {
+  const modal = useTasksStore((state) => state.modal);
+  const showModal = useTasksStore((state) => state.showModal);
+
   return (
     <div
       className="min-h-screen w-full flex justify-center"
@@ -28,6 +32,7 @@ function App() {
             <button
               type="button"
               className="shrink-0 flex items-center gap-1.5 text-white text-[13px] font-semibold px-4 py-2.5 rounded-md transition-all bg-[#D98A3D] cursor-pointer"
+              onClick={showModal}
             >
               <Plus className="w-4 h-4" strokeWidth={2.5} />
               Nueva tarea
@@ -45,11 +50,9 @@ function App() {
           </div>
         </header>
 
-        <ul className="flex flex-col gap-3">
-          <TasksItem />
-        </ul>
+        <TasksList />
 
-        <TasksForm />
+        {modal && <TasksForm />}
       </div>
     </div>
   );
