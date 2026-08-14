@@ -1,6 +1,6 @@
 import { Plus, Search } from "lucide-react";
-import TasksForm from "./components/TasksForm";
 import { useTasksStore } from "./store/store";
+import TasksForm from "./components/TasksForm";
 import TasksList from "./components/TasksList";
 
 function App() {

@@ -1,12 +1,16 @@
+import { useEffect } from "react";
 import { X } from "lucide-react";
 import { PRIORITY } from "../data/priority";
 import { useTasksStore } from "../store/store";
 import { useForm } from "react-hook-form";
-import type { Task } from "../types";
+import type { DraftTask, PriorityLabel } from "../types";
 
 function TasksForm() {
   const addTask = useTasksStore((state) => state.addTask);
   const closeModal = useTasksStore((state) => state.closeModal);
+  const activeId = useTasksStore((state) => state.activeId);
+  const tasks = useTasksStore((state) => state.tasks);
+  const updateTask = useTasksStore((state) => state.updateTask);
 
   const {
     register,
@@ -15,14 +19,30 @@ function TasksForm() {
     setValue,
     watch,
     reset,
-  } = useForm<Task>({
+  } = useForm<DraftTask>({
     defaultValues: { priority: "media" },
   });
 
   const watchPriority = watch("priority");
 
-  const registerTask = (data: Task) => {
-    addTask(data);
+  useEffect(() => {
+    if (activeId) {
+      const activeTask = tasks.filter((task) => task.id === activeId)[0];
+
+      setValue("title", activeTask.title);
+      setValue("dueDate", activeTask.dueDate);
+      setValue("priority", activeTask.priority);
+    } else {
+      reset();
+    }
+  }, [activeId]);
+
+  const registerTask = (data: DraftTask) => {
+    if (activeId) {
+      updateTask(data);
+    } else {
+      addTask(data);
+    }
 
     reset();
   };
@@ -38,7 +58,7 @@ function TasksForm() {
         <div className="p-5">
           <div className="flex items-center justify-between mb-4">
             <h2 className="font-display text-[16px] font-semibold text-[#1B1B18]">
-              Nueva tarea
+              {activeId ? "Editar tarea" : "Nueva tarea"}
             </h2>
 
             <button
@@ -108,7 +128,7 @@ function TasksForm() {
                   <button
                     type="button"
                     key={key}
-                    onClick={() => setValue("priority", key)}
+                    onClick={() => setValue("priority", key as PriorityLabel)}
                     className={`flex items-center gap-1.5 px-2.5 py-2 rounded-md text-[12px] font-medium border transition-colors ${watchPriority === key ? "border-transparent" : "border-[#E3E2DD] text-[#75746D] hover:border-[#C7C6BF]"}`}
                     style={
                       watchPriority === key
@@ -140,7 +160,7 @@ function TasksForm() {
               type="submit"
               className="px-3.5 py-2 rounded-md text-[13px] font-semibold text-white transition-all active:translate-y-0.5 bg-[#D98A3D]"
             >
-              Agregar tarea
+              {activeId ? "Editar tarea" : "Agregar tarea"}
             </button>
           </div>
         </div>

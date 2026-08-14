@@ -1,8 +1,11 @@
+export type PriorityLabel = "alta" | "media" | "baja"
+
 export type Task = {
-    id: string,
-    title: string,
-    dueDate: Date,
-    priority: "alta" | "media" | "baja"
+    id: string
+    title: string
+    dueDate: Date
+    priority: PriorityLabel
+    completed: boolean
 }
 
-export type DraftTask = Omit<Task, 'id'>
+export type DraftTask = Omit<Task, 'id' | 'completed'>
