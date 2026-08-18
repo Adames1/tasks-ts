@@ -9,6 +9,8 @@ function TasksList() {
   const deleteTask = useTasksStore((state) => state.deleteTask);
   const getTaskById = useTasksStore((state) => state.getTaskById);
   const showModal = useTasksStore((state) => state.showModal);
+  const searchQuery = useTasksStore((state) => state.searchQuery);
+  const priorityValue = useTasksStore((state) => state.priorityValue);
 
   const handleCheckMark = (id: string) => {
     toggleCompleted(id);
@@ -18,9 +20,18 @@ function TasksList() {
     deleteTask(id);
   };
 
+  const filteredTasks = tasks.filter((task) => {
+    const matchesTitle = task.title
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const matchesPriority = !priorityValue || task.priority === priorityValue;
+
+    return matchesTitle && matchesPriority;
+  });
+
   return (
     <ul className="flex flex-col gap-3">
-      {tasks.map((task) => {
+      {filteredTasks.map((task) => {
         const p = PRIORITY[task.priority];
         const overdue = isOverdue(task.dueDate, false);
 

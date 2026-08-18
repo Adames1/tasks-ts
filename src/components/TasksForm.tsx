@@ -160,7 +160,7 @@ function TasksForm() {
               type="submit"
               className="px-3.5 py-2 rounded-md text-[13px] font-semibold text-white transition-all active:translate-y-0.5 bg-[#D98A3D]"
             >
-              {activeId ? "Editar tarea" : "Agregar tarea"}
+              {activeId ? "Actualizar tarea" : "Agregar tarea"}
             </button>
           </div>
         </div>
