@@ -11,6 +11,7 @@ function TasksList() {
   const showModal = useTasksStore((state) => state.showModal);
   const searchQuery = useTasksStore((state) => state.searchQuery);
   const priorityValue = useTasksStore((state) => state.priorityValue);
+  const statusValue = useTasksStore((state) => state.statusValue);
 
   const handleCheckMark = (id: string) => {
     toggleCompleted(id);
@@ -25,8 +26,12 @@ function TasksList() {
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
     const matchesPriority = !priorityValue || task.priority === priorityValue;
+    const matchesStatus =
+      statusValue === "todas" ||
+      (statusValue === "pendientes" && !task.completed) ||
+      (statusValue === "completadas" && task.completed);
 
-    return matchesTitle && matchesPriority;
+    return matchesTitle && matchesPriority && matchesStatus;
   });
 
   return (

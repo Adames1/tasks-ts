@@ -13,6 +13,8 @@ function App() {
   const setSearchQuery = useTasksStore((state) => state.setSearchQuery);
   const setPriorityFilter = useTasksStore((state) => state.setPriorityFilter);
   const priorityValue = useTasksStore((state) => state.priorityValue);
+  const setStatusValue = useTasksStore((state) => state.setStatusValue);
+  const statusValue = useTasksStore((state) => state.statusValue);
 
   const totalTasks = tasks.length;
   const pendingTasks = tasks.filter((task) => !task.completed).length;
@@ -69,7 +71,12 @@ function App() {
               <button
                 type="button"
                 key={s.key}
-                className="px-2.5 py-1.5 rounded-[5px] text-[12px] font-medium transition-colors"
+                onClick={() => setStatusValue(s.key)}
+                className={`px-2.5 py-1.5 rounded-[5px] text-[12px] font-medium transition-colors ${
+                  statusValue === s.key
+                    ? "bg-[#24352C] text-white"
+                    : "text-[#75746D] hover:text-[#1B1B18]"
+                }`}
               >
                 {s.label}
               </button>

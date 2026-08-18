@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import { devtools, persist } from "zustand/middleware"
-import type { Task, DraftTask, PriorityLabel } from "../types"
+import type { Task, DraftTask, PriorityLabel, StatusFilter } from "../types"
 import { v4 as uuidv4 } from "uuid"
 
 type TasksState = {
@@ -9,6 +9,7 @@ type TasksState = {
     modal: boolean
     searchQuery: string
     priorityValue: PriorityLabel | undefined
+    statusValue: StatusFilter
     showModal: () => void
     closeModal: () => void
     addTask: (data: DraftTask) => void
@@ -18,6 +19,7 @@ type TasksState = {
     updateTask: (data: DraftTask) => void
     setSearchQuery: (query: string) => void
     setPriorityFilter: (priority: PriorityLabel | undefined) => void
+    setStatusValue: (status: StatusFilter) => void
 }
 
 const createTask = (task: DraftTask): Task => {
@@ -36,6 +38,7 @@ export const useTasksStore = create<TasksState>()(
             activeId: '',
             searchQuery: '',
             priorityValue: undefined,
+            statusValue: 'todas',
 
             showModal: () => {
                 set(() => ({
@@ -94,6 +97,12 @@ export const useTasksStore = create<TasksState>()(
             setPriorityFilter: (priority) => {
                 set(() => ({
                     priorityValue: priority
+                }))
+            },
+
+            setStatusValue: (status) => {
+                set(() => ({
+                    statusValue: status
                 }))
             }
 
