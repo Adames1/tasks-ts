@@ -1,5 +1,7 @@
-export function formatDate(date: Date): string {
-    const dateObj = new Date(date)
+export function formatDate(date: string): string {
+    const [year, month, day] = date.split("-").map(Number);
+    const dateObj = new Date(year, month - 1, day);
+
     const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
         month: 'short',
@@ -9,7 +11,7 @@ export function formatDate(date: Date): string {
     return new Intl.DateTimeFormat('es-ES', options).format(dateObj)
 }
 
-export function isOverdue(iso: Date, completed: boolean) {
+export function isOverdue(iso: string, completed: boolean) {
     if (completed) return false;
     const today = new Date();
     today.setHours(0, 0, 0, 0);

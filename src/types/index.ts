@@ -7,7 +7,7 @@ export type StatusFilter = typeof STATUS[number]["key"]
 export type Task = {
     id: string
     title: string
-    dueDate: Date
+    dueDate: string
     priority: PriorityLabel
     completed: boolean
 }
